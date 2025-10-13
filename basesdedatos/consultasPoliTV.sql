@@ -136,7 +136,7 @@ INSERT INTO chat (usuarioId, programaId, mensaje, fecha) VALUES
 (5, 5, 'Tremenda entrevista en Gelatina', '2024-10-09 18:20:00');
 
 -- Inserts para tabla publicacion
-INSERT INTO publicacion (usuarioId, programaId, contenido, fecha, estado, imagen, likes) VALUES
+INSERT INTO publicacion (usuario_id, programa_id, contenido, fecha_creacion, estado_publicacion, url_imagen, likes) VALUES
 (1, 1, 'Verónica estuvo increíble en el programa de hoy. Me encantó el segmento de cocina.', '2024-10-09 15:50:00', 'PUBLICADO', NULL,2 ),
 (2, 2, 'Las noticias de hoy fueron muy importantes. Gracias por mantener informada a la gente.', '2024-10-09 21:05:00', 'PUBLICADO', NULL,0),
 (3, 3, 'Beto y el equipo siempre tan afilados con el humor político. Genios!', '2024-10-09 22:45:00', 'PUBLICADO', NULL,0),
