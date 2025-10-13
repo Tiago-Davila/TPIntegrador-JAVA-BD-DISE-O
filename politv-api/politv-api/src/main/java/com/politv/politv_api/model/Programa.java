@@ -17,7 +17,7 @@ public class Programa {
     private String descripcion;
     @Column(name = "especial")
     private boolean especial;
-    @Column(name = "duracion")
+    @Column(name="duracion_minutos")
     private int duracionMinutos;
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
@@ -33,6 +33,7 @@ public class Programa {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
+    public Programa(){}
 
     public int getId() {
         return id;

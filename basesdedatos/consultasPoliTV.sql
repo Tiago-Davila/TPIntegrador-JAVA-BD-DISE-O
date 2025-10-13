@@ -72,7 +72,7 @@ INSERT INTO usuario (nombreUsuario, mail, telefono, contrasena, fechaRegistro) V
 ('jorge_vip', 'jorge.lopez@gmail.com', '1189012345', '$2a$10$hashedpassword5', '2024-05-12 11:00:00');
 
 -- Inserts para tabla programa
-INSERT INTO programa (nombre, descripcion, categoria, fechaInicio, fechaFin, duracionMinutos, especial) VALUES
+INSERT INTO programa (nombre, descripcion, categoria, fecha_inicio, fecha_fin, duracion_minutos, especial) VALUES
 ('Cortá por Lozano', 'Programa de entretenimiento conducido por Verónica Lozano con invitados, juegos y actualidad', 'Entretenimiento', '2020-03-01', NULL, 120, 0),
 ('Telefe Noticias', 'Noticiero central de Telefe con Rodolfo Barili', 'Noticias', '2015-01-01', NULL, 60, 0),
 ('Bendita TV', 'Programa de humor y actualidad conducido por Beto Casella', 'Entretenimiento', '2005-03-14', NULL, 90, 0),

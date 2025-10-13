@@ -5,20 +5,39 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name="programacion")
+@Table(name = "programacion", schema = "basededatostv")
 public class Programacion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "programa_id")
+    private int programaId;
+
+    @Column(name = "fecha")
     private LocalDate fecha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "franja")
     private Franja franja;
 
+    @Column(name = "hora_inicio")
     private LocalTime horaInicio;
+
+    @Column(name = "hora_fin")
     private LocalTime horaFin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dia")
     private Dia dia;
 
-    public Programacion(int id, LocalDate fecha, Franja franja, LocalTime horaInicio, LocalTime horaFin, Dia dia) {
+    public Programacion() {
+    }
+
+    public Programacion(int id, int programaId, LocalDate fecha, Franja franja, LocalTime horaInicio, LocalTime horaFin, Dia dia) {
         this.id = id;
+        this.programaId = programaId;
         this.fecha = fecha;
         this.franja = franja;
         this.horaInicio = horaInicio;
@@ -32,6 +51,14 @@ public class Programacion {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getProgramaId() {
+        return programaId;
+    }
+
+    public void setProgramaId(int programaId) {
+        this.programaId = programaId;
     }
 
     public LocalDate getFecha() {
@@ -74,4 +101,3 @@ public class Programacion {
         this.dia = dia;
     }
 }
-

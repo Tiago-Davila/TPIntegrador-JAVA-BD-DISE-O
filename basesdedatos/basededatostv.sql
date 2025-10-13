@@ -221,7 +221,6 @@ CREATE TABLE `programa` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `descripcion` text,
-  `categoria` enum('Noticias','Entretenimiento','Deportes','Tecnologia','Cultura','Lifestyle') NOT NULL,
   `fechaInicio` date NOT NULL,
   `fechaFin` date DEFAULT NULL,
   `duracionMinutos` int NOT NULL,
