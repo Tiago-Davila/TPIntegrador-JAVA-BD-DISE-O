@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ComentarioRepository extends JpaRepository<Publicacion, Integer> {
+public interface ContenidoRepository extends JpaRepository<Publicacion, Integer> {
     List<Publicacion> findByProgramaIdAndEstadoPublicacion(int programaId, EstadoPublicacion estadoPublicacion);
 }
