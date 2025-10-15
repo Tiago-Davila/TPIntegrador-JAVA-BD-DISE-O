@@ -1,11 +1,11 @@
 package com.politv.politv_api.controller;
 
+import com.politv.politv_api.dto.SuscripcionDTO;
 import com.politv.politv_api.model.*;
+import com.politv.politv_api.repository.*;
+import com.politv.politv_api.service.ProgramaService;
 import com.politv.politv_api.service.PublicacionService;
-import com.politv.politv_api.repository.ContenidoRepository;
-import com.politv.politv_api.repository.ProgramaPorFranjaHorariaRepository;
-import com.politv.politv_api.repository.ProgramacionRepository;
-import com.politv.politv_api.repository.ProgramaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,12 +20,14 @@ public class ProgramacionController {
     private final ProgramaRepository programaRepository;
     private final ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository;
     private final PublicacionService service;
+    private final ProgramaService programaService;
 
-    public ProgramacionController(ProgramacionRepository programacionRepository, ProgramaRepository programaRepository, ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository, PublicacionService service) {
+    public ProgramacionController(ProgramacionRepository programacionRepository, ProgramaRepository programaRepository, ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository, PublicacionService service, ProgramaService programaService) {
         this.programacionRepository = programacionRepository;
         this.programaRepository = programaRepository;
         this.programaPorFranjaHorariaRepository = programaPorFranjaHorariaRepository;
         this.service = service;
+        this.programaService = programaService;
     }
 
     @GetMapping("/programacion")
@@ -41,7 +43,19 @@ public class ProgramacionController {
     public List<Programacion> listarProgramaPorFecha(@RequestParam(required = true) LocalDate fecha, @RequestParam(required = true) Franja franja) {
         return programaPorFranjaHorariaRepository.findByFechaAndFranja(fecha,franja);
     }
-    @GetMapping("/programas/{programaId}/comentarios")
+
+    @PostMapping("/programa/{programaId}/suscripcionVip")
+    public ResponseEntity<?> crear(@PathVariable Integer programaId, @RequestBody SuscripcionDTO request) {
+        try {
+            return ResponseEntity.ok(programaService.crear(request.getId(), request.getSuscripcion()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+
+    @GetMapping("/programas/{programaId}/blog/comentarios")
     public List<Publicacion> listarComentariosPublicos(@PathVariable Integer programaId) {
         return service.listarPublicacionesPublicas(programaId);
     }
