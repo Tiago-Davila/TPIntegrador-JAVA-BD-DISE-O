@@ -45,13 +45,15 @@ public class ProgramacionController {
     }
 
     @PostMapping("/programa/{programaId}/suscripcionVip")
-    public ResponseEntity<?> crear(@PathVariable Integer programaId, @RequestBody SuscripcionDTO request) {
+    public ResponseEntity<?> crear(@PathVariable Integer programaId, @RequestBody SuscripcionDTO request
+    ) {
         try {
-            return ResponseEntity.ok(programaService.crear(request.getId(), request.getSuscripcion()));
+            return ResponseEntity.ok(programaService.crear(request.getId(), programaId, request.getSuscripcion()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
 
 

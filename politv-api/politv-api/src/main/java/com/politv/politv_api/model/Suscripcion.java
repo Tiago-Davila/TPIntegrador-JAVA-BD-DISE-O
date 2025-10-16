@@ -13,11 +13,13 @@ public class Suscripcion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "programa_id")
+
+    @Column(name = "programa_id", nullable = false)
     private int programaId;
 
-    @Column(name = "usuario_id")
-    private String autor;
+
+    @Column(name = "usuario_id", nullable = false)
+    private int usuarioId;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
@@ -28,10 +30,10 @@ public class Suscripcion {
     @Column (name = "activa")
     private boolean activa;
 
-    public Suscripcion(int id, int programaId, String autor, LocalDate fechaInicio, LocalDateTime fechaFin, boolean activa) {
+    public Suscripcion(int id, int programaId, int usuarioId, LocalDate fechaInicio, LocalDateTime fechaFin, boolean activa) {
         this.id = id;
         this.programaId = programaId;
-        this.autor = autor;
+        this.usuarioId = usuarioId;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.activa = activa;
@@ -53,12 +55,12 @@ public class Suscripcion {
         this.programaId = programaId;
     }
 
-    public String getAutor() {
-        return autor;
+    public int getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public LocalDate getFechaInicio() {

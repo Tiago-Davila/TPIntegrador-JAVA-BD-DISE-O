@@ -11,14 +11,16 @@ public class Publicacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "programa_id")
-    private int programaId; // Relacion con la entidad Programa
+    @ManyToOne
+    @JoinColumn(name = "programa_id")
+    private Programa programa;
     @Column(name = "contenido")
     private String texto;
     @Column(name = "usuario_id")
-    private String autor;
+    private int usuarioId;
 
-    @Column(name = "estado_publicacion") // Enum o String para el estado (ej: PUBLICADO)
+    @Enumerated
+    @Column(name = "estado_publicacion")
     private EstadoPublicacion estadoPublicacion;
 
     @Column(name = "fecha_creacion")
@@ -27,14 +29,31 @@ public class Publicacion {
     @Column (name = "url_imagen")
     private Blob imagen;
 
-    public Publicacion(int id, int programaId, String texto, String autor, EstadoPublicacion estadoPublicacion, LocalDateTime fechaCreacion, Blob imagen) {
+    public Publicacion(int id, Programa programa, String texto, int usuarioId, EstadoPublicacion estadoPublicacion, LocalDateTime fechaCreacion, Blob imagen) {
         this.id = id;
-        this.programaId = programaId;
+        this.programa = programa;
         this.texto = texto;
-        this.autor = autor;
+        this.usuarioId = usuarioId;
         this.estadoPublicacion = estadoPublicacion;
         this.fechaCreacion = fechaCreacion;
         this.imagen = imagen;
+    }
+    public Publicacion(){}
+
+    public Programa getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public int getId() {
@@ -45,29 +64,6 @@ public class Publicacion {
         this.id = id;
     }
 
-    public int getProgramaId() {
-        return programaId;
-    }
-
-    public void setProgramaId(int programaId) {
-        this.programaId = programaId;
-    }
-
-    public String getTexto() {
-        return texto;
-    }
-
-    public void setTexto(String texto) {
-        this.texto = texto;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
 
     public EstadoPublicacion getEstadoPublicacion() {
         return estadoPublicacion;
