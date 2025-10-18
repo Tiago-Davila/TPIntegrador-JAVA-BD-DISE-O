@@ -22,6 +22,7 @@ public class ProgramacionController {
     private final PublicacionService service;
     private final ProgramaService programaService;
 
+
     public ProgramacionController(ProgramacionRepository programacionRepository, ProgramaRepository programaRepository, ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository, PublicacionService service, ProgramaService programaService) {
         this.programacionRepository = programacionRepository;
         this.programaRepository = programaRepository;
@@ -39,11 +40,14 @@ public class ProgramacionController {
     public List<Programa> listarPrograma() {
         return programaRepository.findAll();
     }
+
+
+    //a
     @GetMapping("/programacion/listarPrograma")
     public List<Programacion> listarProgramaPorFecha(@RequestParam(required = true) LocalDate fecha, @RequestParam(required = true) Franja franja) {
         return programaPorFranjaHorariaRepository.findByFechaAndFranja(fecha,franja);
     }
-
+    //b
     @PostMapping("/programa/{programaId}/suscripcionVip")
     public ResponseEntity<?> crear(@PathVariable Integer programaId, @RequestBody SuscripcionDTO request
     ) {
@@ -53,10 +57,7 @@ public class ProgramacionController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
-
-
+    //c
     @GetMapping("/programas/{programaId}/blog/comentarios")
     public List<Publicacion> listarComentariosPublicos(@PathVariable Integer programaId) {
         return service.listarPublicacionesPublicas(programaId);
