@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProgramasStaffRepository extends JpaRepository<ProgramasStaff, Integer> {
-    Optional<Staff> findByProgramaId(int programaId);
+    List<ProgramasStaff> findByProgramaId(Integer programaId);
 
 }

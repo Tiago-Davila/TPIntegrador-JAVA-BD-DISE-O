@@ -38,6 +38,14 @@ public class Publicacion {
         this.fechaCreacion = fechaCreacion;
         this.imagen = imagen;
     }
+    public Publicacion(Programa programa, String texto, int usuarioId, EstadoPublicacion estadoPublicacion) {
+        this.programa = programa;
+        this.texto = texto;
+        this.usuarioId = usuarioId;
+        this.estadoPublicacion = estadoPublicacion;
+        this.fechaCreacion = LocalDateTime.now(); // se genera automáticamente
+    }// para crear publicaciones mas facil
+
     public Publicacion(){}
 
     public Programa getPrograma() {

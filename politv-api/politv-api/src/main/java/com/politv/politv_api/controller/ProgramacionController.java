@@ -57,11 +57,8 @@ public class ProgramacionController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    //c
-    @GetMapping("/programas/{programaId}/blog/comentarios")
-    public List<Publicacion> listarComentariosPublicos(@PathVariable Integer programaId) {
-        return service.listarPublicacionesPublicas(programaId);
-    }
+
+
 
 
 }
