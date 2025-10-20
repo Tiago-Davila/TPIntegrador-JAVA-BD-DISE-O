@@ -1,47 +1,54 @@
 -- b
 -- verificar tabla de prohibidoscategoria
-delimiter//
-create trigger verificarPalabrasProhibidas after insert on publicacion 
-for each row begin  
-delete from publicacion where old.contenido in (select palabra from palabraprohibida)
-end// 
-delimiter ;
+DELIMITER //
+create trigger verificarPalabrasProhibidas before insert on publicacion for each row
+begin
+    if new.contenido in (select palabra from palabraprohibida) then
+        set new.estado_publicacion = 'PENDIENTE_REVISION';
+    end if;
+end//
+DELIMITER ;
 drop trigger verificarPalabrasProhibidas;
+insert into publicacion value(77772, 1, 1, "spam", curdate(), "PUBLICADO", NULL, 0);
 -- c 
 -- los comentorios y post tienen likes o las publicaciones tienen likes 
 delimiter //
-create procedure cantidadLikes (in idPrograma int) begin 
-select sum(likes), count(publicacion.id) from publicacion where idPrograma = publicacion.programaId;
+create procedure cantidadLikes (in idPrograma int) 
+begin 
+select sum(likes), count(publicacion.id) from publicacion where idPrograma = publicacion.programa_id;
 end // 
 delimiter ;
+drop procedure cantidadLikes;
 call cantidadLikes(1);
 -- d
 delimiter //
-create procedure cantidadDePublicacionesUsuario (in fechaInicio date, in fechaFin date, in usuarioID int)
+create function cantidadDePublicacionesUsuario (fechaInicio date, fechaFin date, usuarioID int) returns int deterministic
 begin 
 declare cantidadPublicaciones int;
-select count(publicacion.id) into cantidadPublicaciones from publicacion where fecha  between fechaInicio and fechaFin 
-and usuarioID = publicacion.usuarioId;
+select count(publicacion.id) into cantidadPublicaciones from publicacion where publicacion.fecha_creacion between fechaInicio and fechaFin 
+and usuarioID = publicacion.usuario_id;
+return cantidadPublicaciones;
 end // 
 delimiter ;
+drop function cantidadDePublicacionesUsuario;
 delimiter // 
-create procedure cantidadDeFavoritosUsuario(in fechaInicio date, in fechaFin date, in usuarioID int)
+create function cantidadDeFavoritosUsuario(fechaInicio date, fechaFin date, usuarioID int) returns int deterministic
 begin 
 declare cantidadFavoritos int;
-select count(favorito.id) into cantidadFavoritos from favorito where fecha  between fechaInicio and fechaFin and usuarioID = publicacion.usuarioId;
+select count(favorito.id) into cantidadFavoritos from favorito where favorito.fecha between fechaInicio and fechaFin and usuarioID = publicacion.usuario_id;
+return cantidadFavoritos;
 end // 
 delimiter ;
-
+drop function cantidadDeFavoritosUsuario;
 delimiter //
 create procedure usuariosInteractuaronTresVeces(in fechaInicio date, in fechaFin date)
 begin
-select usuario.id from usuario join publicacion on publicacion.id = publicacionId
+select usuario.id from usuario join publicacion on usuario.id = usuario_id
 where cantidadDePublicacionesUsuario(fechaInicio, fechaFin, usuario.id) > 3 or cantidadDeFavoritosUsuario(fechaInicio, fechaFin, usuario.id) > 3;
 end //
 delimiter ;
-
-
-
+drop procedure usuariosInteractuaronTresVeces;
+call usuariosInteractuaronTresVeces("2025-5-5", current_date());
 -- e
 delimiter //
 create Event borrarComentariosViejos on schedule Every 1 month
