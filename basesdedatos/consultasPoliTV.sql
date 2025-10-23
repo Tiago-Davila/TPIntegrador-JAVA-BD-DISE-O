@@ -24,52 +24,51 @@ call cantidadLikes(1);
 delimiter //
 create function cantidadDePublicacionesUsuario (fechaInicio date, fechaFin date, usuarioID int) returns int deterministic
 begin 
-declare cantidadPublicaciones int;
-select count(publicacion.id) into cantidadPublicaciones from publicacion where publicacion.fecha_creacion between fechaInicio and fechaFin 
-and usuarioID = publicacion.usuario_id;
-return cantidadPublicaciones;
+	declare cantidadPublicaciones int;
+	select count(publicacion.id) into cantidadPublicaciones from publicacion 
+    where date(publicacion.fecha_creacion) between fechaInicio and fechaFin 
+	and publicacion.usuario_id = usuarioID;
+	return cantidadPublicaciones;
 end // 
 delimiter ;
 drop function cantidadDePublicacionesUsuario;
 delimiter // 
 create function cantidadDeFavoritosUsuario(fechaInicio date, fechaFin date, usuarioID int) returns int deterministic
 begin 
-declare cantidadFavoritos int;
-select count(favorito.id) into cantidadFavoritos from favorito where favorito.fecha between fechaInicio and fechaFin and usuarioID = publicacion.usuario_id;
-return cantidadFavoritos;
+	declare cantidadFavoritos int;
+	select count(favorito.id) into cantidadFavoritos from favorito 
+    where date(favorito.fecha) between fechaInicio and fechaFin and usuarioID = favorito.usuarioId;
+	return cantidadFavoritos;
 end // 
 delimiter ;
 drop function cantidadDeFavoritosUsuario;
 delimiter //
 create procedure usuariosInteractuaronTresVeces(in fechaInicio date, in fechaFin date)
 begin
-select usuario.id from usuario join publicacion on usuario.id = usuario_id
-where cantidadDePublicacionesUsuario(fechaInicio, fechaFin, usuario.id) > 3 or cantidadDeFavoritosUsuario(fechaInicio, fechaFin, usuario.id) > 3;
+	select usuario.id from usuario join publicacion on usuario.id = publicacion.usuario_id
+	where cantidadDePublicacionesUsuario(fechaInicio, fechaFin, usuario.id) > 3 
+    or cantidadDeFavoritosUsuario(fechaInicio, fechaFin, usuario.id) > 3 group by usuario.id;
 end //
 delimiter ;
 drop procedure usuariosInteractuaronTresVeces;
-call usuariosInteractuaronTresVeces("2025-5-5", current_date());
+call usuariosInteractuaronTresVeces("2024-1-1", current_date());
 -- e
 delimiter //
-create Event borrarComentariosViejos on schedule Every 1 month
-DO begin 
-delete from comentario where timestampdiff(year, fecha, now()) > 10;
-end 
-delimiter ;
-delimiter //
-create Event borrarPublicacionVieja on schedule Every 1 month
-DO begin 
-delete from publicacion where timestampdiff(year, fecha, now()) > 10;
-end
+create Event borrarPublicacionVieja on schedule EVERY 1 month starts now() DO
+begin 
+	delete from publicacion where timestampdiff(year, fecha, now()) > 10;
+end //
 delimiter ;
 
 -- f 
-create Event enviarNotificacion on schedule every 1 day
-DO
-insert into notificacion(usuarioId, mensaje, fechaEnvio)
-select usuarioId, concat("Manana se trasmite", programa.nombre, " a las ", programa.horaInicio), programacion.fecha + interval 1 DAY
-from favorito join programa on programaId = programa.id join programacion on programaId = programa.id where timediff(Day, programacion.fecha, curdate()) = 1;
-
+delimiter //
+create Event enviarNotificacion on schedule every 1 day DO
+begin
+	insert into notificacion(usuarioId, mensaje, fechaEnvio)
+	select usuarioId, concat("Manana se trasmite", programa.nombre, " a las ", programa.horaInicio), programacion.fecha + interval 1 DAY
+	from favorito join programa on programaId = programa.id join programacion on programaId = programa.id where timediff(Day, programacion.fecha, curdate()) = 1;
+end //
+delimiter ;
 -- Inserts para tabla usuario
 INSERT INTO usuario (nombreUsuario, mail, telefono, contrasena, fechaRegistro) VALUES
 ('martin_2024', 'martin.gomez@gmail.com', '1145678901', '$2a$10$hashedpassword1', '2024-01-15 10:30:00'),
@@ -149,6 +148,9 @@ INSERT INTO publicacion (usuario_id, programa_id, contenido, fecha_creacion, est
 (3, 3, 'Beto y el equipo siempre tan afilados con el humor político. Genios!', '2024-10-09 22:45:00', 'PUBLICADO', NULL,0),
 (4, 4, 'El streaming argentino llegó para quedarse. Nadie Dice Nada rompe todo.', '2024-10-09 17:15:00', 'PENDIENTE_REVISION', NULL, 0),
 (5, 5, 'Migue Granados es un genio entrevistando. Olga es la mejor plataforma.', '2024-10-09 19:00:00', 'PUBLICADO', NULL, 0);
+insert into publicacion (usuario_id, programa_id, contenido, fecha_creacion, estado_publicacion, url_imagen, likes) value (1, 1, 'Increíble rendimiento de River Plate!', '2025-10-09 15:50:00', 'PUBLICADO', NULL, 2);
+insert into publicacion (usuario_id, programa_id, contenido, fecha_creacion, estado_publicacion, url_imagen, likes) value (1, 1, 'No me lo banco más', '2025-10-11 15:50:00', 'PUBLICADO', NULL, 2);
+insert into publicacion (usuario_id, programa_id, contenido, fecha_creacion, estado_publicacion, url_imagen, likes) value (1, 1, 'Siempre lo mismo.....', '2025-10-11 15:50:00', 'PUBLICADO', NULL, 2);
 
 -- Inserts para tabla encuesta
 INSERT INTO encuesta (programaId, titulo, fechaCreacion, fechaFin, activa) VALUES
@@ -205,4 +207,3 @@ INSERT INTO palabraprohibida (palabra) VALUES
 ('insulto2'),
 ('groseria1'),
 ('ofensa1');
-
