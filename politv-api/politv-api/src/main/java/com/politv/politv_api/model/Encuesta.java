@@ -3,6 +3,7 @@ package com.politv.politv_api.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "encuesta")
@@ -21,6 +22,10 @@ public class Encuesta {
     @Column(name = "activa")
     private boolean activa;
 
+    @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Opcion> opciones;
+    // para obtener las opciones que estan en otra tabla
+
     public Encuesta(Integer id, int programaId, String titulo, LocalDate fechaCreacion, LocalDate fechaFin, boolean activa) {
         this.id = id;
         this.programaId = programaId;
@@ -29,7 +34,7 @@ public class Encuesta {
         this.fechaFin = fechaFin;
         this.activa = activa;
     }
-
+    public Encuesta() {}
     public Integer getId() {
         return id;
     }

@@ -19,6 +19,6 @@ public class EncuestaService {
         return encuestasRepository;
     }
     public List<Encuesta> encuestasActivas(int programaId){
-        return encuestasRepository.findByPrograma_IdAndActiva (programaId, true);
+        return encuestasRepository.findByProgramaIdAndActivaTrue(programaId);
     }
 }

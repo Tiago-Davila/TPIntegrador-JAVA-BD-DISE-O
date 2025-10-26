@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface EncuestasRepository extends JpaRepository<Encuesta, Integer> {
-    List<Encuesta> findByPrograma_IdAndActiva(Integer programaId, boolean activa);
-
+    List<Encuesta> findByProgramaIdAndActivaTrue(Integer programaId);
 }
