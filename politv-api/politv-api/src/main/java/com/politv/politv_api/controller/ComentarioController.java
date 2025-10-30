@@ -22,7 +22,7 @@ public class ComentarioController {
 
 
     @PostMapping("/{programaId}/blog/comentar")
-    public Publicacion comentar(@PathVariable Integer programaId, @RequestParam Integer usuarioId, @RequestParam String contenido) {
+    public Publicacion comentar(@PathVariable Integer programaId, @RequestParam Integer usuarioId   , @RequestParam String contenido) {
         return service.crearComentario(programaId, usuarioId, contenido);
     }
 

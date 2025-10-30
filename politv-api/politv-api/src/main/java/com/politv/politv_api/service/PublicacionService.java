@@ -36,7 +36,7 @@ public class PublicacionService {
     }
 
     public List<Publicacion> listarPublicacionesPublicas(Integer programaId) {
-        return publicacionRepository.findByPrograma_IdAndEstadoPublicacion (programaId, EstadoPublicacion.PUBLICADO);
+        return publicacionRepository.findByProgramaIdAndEstadoPublicacion (programaId, EstadoPublicacion.PUBLICADO);
     }
     public Publicacion crearComentario(Integer programaId, Integer usuarioId, String contenido) {
         List<PalabraProhibida> prohibidas = palabraProhibidaRepository.findAll();

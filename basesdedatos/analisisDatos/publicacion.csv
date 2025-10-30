@@ -1,0 +1,7 @@
+"id","usuario_id","programa_id","contenido","fecha_creacion","estado_publicacion","url_imagen","likes"
+31,1,1,"Verónica estuvo increíble en el programa de hoy. Me encantó el segmento de cocina.","2024-10-09 15:50:00","PUBLICADO","",2
+32,2,2,"Las noticias de hoy fueron muy importantes. Gracias por mantener informada a la gente.","2024-10-09 21:05:00","PUBLICADO","",0
+33,3,3,"Beto y el equipo siempre tan afilados con el humor político. Genios!","2024-10-09 22:45:00","PUBLICADO","",0
+34,4,4,"El streaming argentino llegó para quedarse. Nadie Dice Nada rompe todo.","2024-10-09 17:15:00","PENDIENTE_REVISION","",0
+35,5,5,"Migue Granados es un genio entrevistando. Olga es la mejor plataforma.","2024-10-09 19:00:00","PUBLICADO","",0
+77772,1,1,"spam","2025-10-20 00:00:00","PENDIENTE_REVISION","",0
