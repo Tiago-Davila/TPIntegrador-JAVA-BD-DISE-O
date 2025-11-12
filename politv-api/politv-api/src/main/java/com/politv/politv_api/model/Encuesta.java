@@ -3,83 +3,54 @@ package com.politv.politv_api.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+
 
 @Entity
 @Table(name = "encuesta")
 public class Encuesta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "programa_id")
-    private int programaId;
-    @Column(name = "titulo")
+
+    @Column(name = "programa_id", nullable = false)
+    private Integer programaId;
+
     private String titulo;
+
     @Column(name = "fecha_creacion")
-    private LocalDate fechaCreacion;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+
     @Column(name = "fecha_fin")
-    private LocalDate fechaFin;
-    @Column(name = "activa")
-    private boolean activa;
+    private LocalDateTime fechaFin;
 
-    @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Boolean activa = true;
+
+    @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Opcion> opciones;
-    // para obtener las opciones que estan en otra tabla
 
-    public Encuesta(Integer id, int programaId, String titulo, LocalDate fechaCreacion, LocalDate fechaFin, boolean activa) {
-        this.id = id;
-        this.programaId = programaId;
-        this.titulo = titulo;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaFin = fechaFin;
-        this.activa = activa;
-    }
-    public Encuesta() {}
-    public Integer getId() {
-        return id;
-    }
+    // Getters y Setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public Integer getProgramaId() { return programaId; }
+    public void setProgramaId(Integer programaId) { this.programaId = programaId; }
 
-    public int getProgramaId() {
-        return programaId;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public void setProgramaId(int programaId) {
-        this.programaId = programaId;
-    }
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public LocalDateTime getFechaFin() { return fechaFin; }
+    public void setFechaFin(LocalDateTime fechaFin) { this.fechaFin = fechaFin; }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    public Boolean getActiva() { return activa; }
+    public void setActiva(Boolean activa) { this.activa = activa; }
 
-    public LocalDate getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDate fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public LocalDate getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(LocalDate fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public boolean isActiva() {
-        return activa;
-    }
-
-    public void setActiva(boolean activa) {
-        this.activa = activa;
-    }
+    public List<Opcion> getOpciones() { return opciones; }
+    public void setOpciones(List<Opcion> opciones) { this.opciones = opciones; }
 }

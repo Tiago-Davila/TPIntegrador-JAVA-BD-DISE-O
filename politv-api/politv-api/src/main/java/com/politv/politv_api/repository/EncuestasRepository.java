@@ -11,3 +11,4 @@ import java.util.List;
 public interface EncuestasRepository extends JpaRepository<Encuesta, Integer> {
     List<Encuesta> findByProgramaIdAndActivaTrue(Integer programaId);
 }
+
