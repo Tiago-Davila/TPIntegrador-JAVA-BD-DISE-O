@@ -7,6 +7,8 @@ import com.politv.politv_api.service.ProgramaService;
 import com.politv.politv_api.service.PublicacionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -49,14 +51,16 @@ public class ProgramacionController {
     }
     //b
     @PostMapping("/programa/{programaId}/suscripcionVip")
-    public ResponseEntity<?> crear(@PathVariable Integer programaId, @RequestBody SuscripcionDTO request
-    ) {
+    public ResponseEntity<?> crearSuscripcion(
+            @PathVariable Integer programaId,
+            @RequestParam Integer usuarioId) {
+
         try {
-            return ResponseEntity.ok(programaService.crear(request.getId(), programaId, request.getSuscripcion()));
+            return ResponseEntity.ok(programaService.suscribir(usuarioId, programaId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }//corregir
+    }//http://localhost:8080/api/programa/1/suscripcionVip?usuarioId=1
 
 
 

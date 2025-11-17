@@ -30,13 +30,9 @@ public class Suscripcion {
     @Column (name = "activa")
     private boolean activa;
 
-    public Suscripcion(int id, int programaId, int usuarioId, LocalDate fechaInicio, LocalDateTime fechaFin, boolean activa) {
-        this.id = id;
-        this.programaId = programaId;
+    public Suscripcion(Integer usuarioId, Integer programaId) {
         this.usuarioId = usuarioId;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.activa = activa;
+        this.programaId = programaId;
     }
     public Suscripcion(){}
 

@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface PublicacionRepository extends JpaRepository<Publicacion, Integer> {
-    List<Publicacion> findByProgramaIdAndEstadoPublicacion(Integer programaId, EstadoPublicacion estadoPublicacion);
+    List<Publicacion> findByPrograma_IdAndEstadoPublicacion(Integer programaId, EstadoPublicacion estadoPublicacion);
+
 
 
 }

@@ -11,14 +11,16 @@ public class ProgramaService {
     public ProgramaService(SuscripcionRepository suscripcionRepository) {
         this.suscripcionRepository = suscripcionRepository;
     }
-    public Suscripcion crear(int usuarioId, int programaId, Suscripcion nueva) throws Exception {
-        nueva.setProgramaId(programaId);
-        Suscripcion existente = suscripcionRepository.findByUsuarioIdAndProgramaIdAndActivaTrue(usuarioId, programaId).orElse(null);
-        if (existente != null) {
-            throw new Exception("Ya tienes una suscripción activa");
-        }
+    public Suscripcion suscribir(Integer usuarioId, Integer programaId) {
+
+        // evitar 2 suscripciones activas
+        suscripcionRepository.findByUsuarioIdAndProgramaIdAndActiva(usuarioId, programaId, true)
+                .ifPresent(s -> {
+                    throw new RuntimeException("El usuario ya es VIP en este programa");
+                });
+
+        Suscripcion nueva = new Suscripcion(usuarioId, programaId);
         return suscripcionRepository.save(nueva);
     }
-
 
 }
