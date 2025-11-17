@@ -42,7 +42,7 @@ public class ProgramacionController {
     }
 
 
-    //a
+    //a-http://localhost:8080/api/programacion/listarPrograma?fecha=2025-10-09&franja=NOCHE
     @GetMapping("/programacion/listarPrograma")
     public List<Programacion> listarProgramaPorFecha(@RequestParam(required = true) LocalDate fecha, @RequestParam(required = true) Franja franja) {
         return programaPorFranjaHorariaRepository.findByFechaAndFranja(fecha,franja);
@@ -56,7 +56,7 @@ public class ProgramacionController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }//corregir
 
 
 

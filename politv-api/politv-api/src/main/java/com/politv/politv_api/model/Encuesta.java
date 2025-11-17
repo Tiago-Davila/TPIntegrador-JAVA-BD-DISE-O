@@ -29,8 +29,16 @@ public class Encuesta {
 
     private Boolean activa = true;
 
-    @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Opcion> opciones;
+
+    public Encuesta(Integer id, Integer programaId, String titulo, LocalDateTime fechaCreacion, LocalDateTime fechaFin, Boolean activa) {
+        this.id = id;
+        this.programaId = programaId;
+        this.titulo = titulo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaFin = fechaFin;
+        this.activa = activa;
+    }
+    public Encuesta(){}
 
     // Getters y Setters
     public Integer getId() { return id; }
@@ -51,6 +59,5 @@ public class Encuesta {
     public Boolean getActiva() { return activa; }
     public void setActiva(Boolean activa) { this.activa = activa; }
 
-    public List<Opcion> getOpciones() { return opciones; }
-    public void setOpciones(List<Opcion> opciones) { this.opciones = opciones; }
+
 }

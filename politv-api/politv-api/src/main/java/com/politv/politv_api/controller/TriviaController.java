@@ -24,5 +24,5 @@ public class TriviaController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }//corregir
 }

@@ -38,6 +38,7 @@ public class Suscripcion {
         this.fechaFin = fechaFin;
         this.activa = activa;
     }
+    public Suscripcion(){}
 
     public int getId() {
         return id;

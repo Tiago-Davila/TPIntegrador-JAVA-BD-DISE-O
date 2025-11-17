@@ -20,7 +20,6 @@ public class ChatController {
         this.usuarioRepository = usuarioRepository;
     }
 
-    // WebSocket: recibe y reenvía los mensajes
     @MessageMapping("/chat/{programaId}")
     @SendTo("/topic/chat/{programaId}")
     public ChatMessage enviarMensaje(ChatMessage msg) {
@@ -30,12 +29,10 @@ public class ChatController {
         Chat nuevo = new Chat(usuario, msg.getProgramaId(), msg.getMensaje());
         chatRepository.save(nuevo);
 
-        // Devolvemos el mensaje con el nombre del usuario
         msg.setNombreUsuario(usuario.getNombreUsuario());
         return msg;
     }
 
-    // REST: historial completo del chat de un programa
     @GetMapping("/historial/{programaId}")
     public List<Chat> historial(@PathVariable Integer programaId) {
         return chatRepository.findByProgramaIdOrderByFechaAsc(programaId);

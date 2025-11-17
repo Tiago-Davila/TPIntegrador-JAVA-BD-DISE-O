@@ -60,14 +60,14 @@ DROP TABLE IF EXISTS `encuesta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `encuesta` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `programaId` int NOT NULL,
+  `programa_id` int NOT NULL,
   `titulo` varchar(255) NOT NULL,
-  `fechaCreacion` datetime DEFAULT CURRENT_TIMESTAMP,
-  `fechaFin` datetime DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `fecha_fin` datetime DEFAULT NULL,
   `activa` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `programaId` (`programaId`),
-  CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`programaId`) REFERENCES `programa` (`id`)
+  KEY `programaId` (`programa_id`),
+  CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`programa_id`) REFERENCES `programa` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -80,15 +80,15 @@ DROP TABLE IF EXISTS `favorito`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `favorito` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `usuarioId` int NOT NULL,
-  `programaId` int NOT NULL,
-  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `usuario_id` int NOT NULL,
+  `programa_id` int NOT NULL,
+  `fecha_agregado` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `usuarioId` (`usuarioId`,`programaId`),
-  KEY `programaId` (`programaId`),
-  CONSTRAINT `favorito_ibfk_1` FOREIGN KEY (`usuarioId`) REFERENCES `usuario` (`id`),
-  CONSTRAINT `favorito_ibfk_2` FOREIGN KEY (`programaId`) REFERENCES `programa` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `usuarioId` (`usuario_id`,`programa_id`),
+  KEY `programaId` (`programa_id`),
+  CONSTRAINT `favorito_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`),
+  CONSTRAINT `favorito_ibfk_2` FOREIGN KEY (`programa_id`) REFERENCES `programa` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,13 +100,16 @@ DROP TABLE IF EXISTS `notificacion`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notificacion` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `usuarioId` int NOT NULL,
+  `usuario_id` int NOT NULL,
   `mensaje` text NOT NULL,
-  `fechaEnvio` datetime DEFAULT CURRENT_TIMESTAMP,
+  `fecha_envio` datetime DEFAULT CURRENT_TIMESTAMP,
+  `enviada` tinyint(1) NOT NULL DEFAULT '0',
+  `programa_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `usuarioId` (`usuarioId`),
-  CONSTRAINT `notificacion_ibfk_1` FOREIGN KEY (`usuarioId`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `usuarioId` (`usuario_id`,`programa_id`),
+  KEY `fk_notificacion_programa` (`programa_id`),
+  CONSTRAINT `fk_notificacion_programa` FOREIGN KEY (`programa_id`) REFERENCES `programa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,14 +121,11 @@ DROP TABLE IF EXISTS `opciones`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `opciones` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `encuestaId` int NOT NULL,
   `opcion` varchar(255) NOT NULL,
-  `trivia_id` int NOT NULL,
-  PRIMARY KEY (`id`,`trivia_id`),
-  KEY `encuestaId` (`encuestaId`),
-  KEY `fk_opciones_trivia1_idx` (`trivia_id`),
-  CONSTRAINT `fk_opciones_trivia1` FOREIGN KEY (`trivia_id`) REFERENCES `trivia` (`id`),
-  CONSTRAINT `opcionencuesta_ibfk_1` FOREIGN KEY (`encuestaId`) REFERENCES `encuesta` (`id`)
+  `encuesta_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_opcion_encuesta` (`encuesta_id`),
+  CONSTRAINT `fk_opcion_encuesta` FOREIGN KEY (`encuesta_id`) REFERENCES `encuesta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -240,19 +240,18 @@ DROP TABLE IF EXISTS `respuestatrivia`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `respuestatrivia` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `triviaId` int NOT NULL,
-  `usuarioId` int NOT NULL,
+  `trivia_id` int NOT NULL,
+  `usuario_id` int NOT NULL,
   `respuesta` varchar(255) NOT NULL,
   `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
   `opciones_id` int NOT NULL,
-  `opciones_trivia_id` int NOT NULL,
-  PRIMARY KEY (`id`,`opciones_id`,`opciones_trivia_id`),
-  UNIQUE KEY `triviaId` (`triviaId`,`usuarioId`),
-  KEY `usuarioId` (`usuarioId`),
-  KEY `fk_respuestatrivia_opciones1_idx` (`opciones_id`,`opciones_trivia_id`),
-  CONSTRAINT `fk_respuestatrivia_opciones1` FOREIGN KEY (`opciones_id`, `opciones_trivia_id`) REFERENCES `opciones` (`id`, `trivia_id`),
-  CONSTRAINT `respuestatrivia_ibfk_1` FOREIGN KEY (`triviaId`) REFERENCES `trivia` (`id`),
-  CONSTRAINT `respuestatrivia_ibfk_2` FOREIGN KEY (`usuarioId`) REFERENCES `usuario` (`id`)
+  PRIMARY KEY (`id`,`opciones_id`),
+  UNIQUE KEY `triviaId` (`trivia_id`,`usuario_id`),
+  KEY `usuarioId` (`usuario_id`),
+  KEY `fk_respuestatrivia_opciones1_idx` (`opciones_id`),
+  CONSTRAINT `fk_respuestatrivia_opciones1` FOREIGN KEY (`opciones_id`) REFERENCES `opciones` (`id`),
+  CONSTRAINT `respuestatrivia_ibfk_1` FOREIGN KEY (`trivia_id`) REFERENCES `trivia` (`id`),
+  CONSTRAINT `respuestatrivia_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -305,13 +304,14 @@ DROP TABLE IF EXISTS `trivia`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trivia` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `programaId` int NOT NULL,
+  `programa_id` int NOT NULL,
   `pregunta` text NOT NULL,
-  `respuestaCorrecta` varchar(255) NOT NULL,
-  `fechaCreacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `respuesta_correcta` varchar(255) NOT NULL,
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `activa` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `programaId` (`programaId`),
-  CONSTRAINT `trivia_ibfk_1` FOREIGN KEY (`programaId`) REFERENCES `programa` (`id`)
+  KEY `programaId` (`programa_id`),
+  CONSTRAINT `trivia_ibfk_1` FOREIGN KEY (`programa_id`) REFERENCES `programa` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -343,18 +343,18 @@ DROP TABLE IF EXISTS `votoencuesta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `votoencuesta` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `encuestaId` int NOT NULL,
-  `usuarioId` int NOT NULL,
-  `opcionId` int NOT NULL,
+  `encuesta_id` int NOT NULL,
+  `usuario_id` int NOT NULL,
+  `opcion_id` int NOT NULL,
   `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `usuarioId` (`usuarioId`,`encuestaId`),
-  KEY `encuestaId` (`encuestaId`),
-  KEY `opcionId` (`opcionId`),
-  CONSTRAINT `votoencuesta_ibfk_1` FOREIGN KEY (`encuestaId`) REFERENCES `encuesta` (`id`),
-  CONSTRAINT `votoencuesta_ibfk_2` FOREIGN KEY (`usuarioId`) REFERENCES `usuario` (`id`),
-  CONSTRAINT `votoencuesta_ibfk_3` FOREIGN KEY (`opcionId`) REFERENCES `opciones` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `usuarioId` (`usuario_id`,`encuesta_id`),
+  KEY `encuestaId` (`encuesta_id`),
+  KEY `opcionId` (`opcion_id`),
+  CONSTRAINT `votoencuesta_ibfk_1` FOREIGN KEY (`encuesta_id`) REFERENCES `encuesta` (`id`),
+  CONSTRAINT `votoencuesta_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`),
+  CONSTRAINT `votoencuesta_ibfk_3` FOREIGN KEY (`opcion_id`) REFERENCES `opciones` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -366,4 +366,4 @@ CREATE TABLE `votoencuesta` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-30 11:41:18
+-- Dump completed on 2025-11-13  8:18:39

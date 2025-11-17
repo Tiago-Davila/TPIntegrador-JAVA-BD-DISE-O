@@ -32,5 +32,5 @@ public class EncuestaController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }//http://localhost:8080/api/encuestas/1/votar?usuarioId=2&opcionId=6
 }
