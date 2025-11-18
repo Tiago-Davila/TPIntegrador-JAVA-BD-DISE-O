@@ -1,11 +1,13 @@
 package com.politv.politv_api.controller;
 
+import com.politv.politv_api.dto.RespuestaTriviaDTO;
+import com.politv.politv_api.model.RespuestaTrivia;
 import com.politv.politv_api.service.TriviaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/trivias")
 public class TriviaController {
 
     private final TriviaService triviaService;
@@ -14,15 +16,17 @@ public class TriviaController {
         this.triviaService = triviaService;
     }
 
-    @PostMapping("/trivias/{triviaId}/responder")
-    public ResponseEntity<?> responder(@PathVariable Integer triviaId,
-                                       @RequestParam Integer usuarioId,
-                                       @RequestParam String respuesta) {
+    @PostMapping("/{triviaId}/responder")
+    public ResponseEntity<?> responder(@PathVariable Integer triviaId, @RequestBody RespuestaTriviaDTO request) {
         try {
-            String resultado = triviaService.responder(triviaId, usuarioId, respuesta);
-            return ResponseEntity.ok(resultado);
+            RespuestaTrivia respuesta = triviaService.responder(triviaId, request.getUsuarioId(), request.getRespuesta());
+            return ResponseEntity.ok(respuesta);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }//corregir
+    }//http://localhost:8080/api/trivias/3/responder
+//    {
+//        "usuarioId": 1,
+//            "respuesta": "Mi respuesta elegida"
+//    }
 }

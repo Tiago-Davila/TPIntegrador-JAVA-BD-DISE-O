@@ -4,35 +4,33 @@ import com.politv.politv_api.model.RespuestaTrivia;
 import com.politv.politv_api.model.Trivia;
 import com.politv.politv_api.repository.RespuestaTriviaRepository;
 import com.politv.politv_api.repository.TriviaRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TriviaService {
 
-    private final TriviaRepository triviaRepository;
-    private final RespuestaTriviaRepository respuestaRepository;
+    private final RespuestaTriviaRepository respuestaRepo;
+    private final TriviaRepository triviaRepo;
 
-    public TriviaService(TriviaRepository t, RespuestaTriviaRepository r) {
-        this.triviaRepository = t;
-        this.respuestaRepository = r;
+    public TriviaService(RespuestaTriviaRepository respuestaRepo, TriviaRepository triviaRepo) {
+        this.respuestaRepo = respuestaRepo;
+        this.triviaRepo = triviaRepo;
     }
 
-    @Transactional
-    public String responder(Integer triviaId, Integer usuarioId, String respuestaUsuario) throws Exception {
-        if (respuestaRepository.existsByUsuarioIdAndTriviaId(usuarioId, triviaId))
-            throw new Exception("Ya respondiste esta trivia.");
+    public RespuestaTrivia responder(Integer triviaId, Integer usuarioId, String respuesta) {
 
-        Trivia trivia = triviaRepository.findById(triviaId)
-                .orElseThrow(() -> new Exception("Trivia no encontrada."));
+        // validar trivia existente
+        Trivia trivia = triviaRepo.findById(triviaId)
+                .orElseThrow(() -> new RuntimeException("La trivia no existe"));
 
-        boolean correcta = trivia.getRespuestaCorrecta()
-                .equalsIgnoreCase(respuestaUsuario.trim());
+        // validar que no haya respondido antes
+        respuestaRepo.findByTriviaIdAndUsuarioId(triviaId, usuarioId)
+                .ifPresent(r -> {
+                    throw new RuntimeException("El usuario ya respondió esta trivia");
+                });
 
-        RespuestaTrivia respuesta = new RespuestaTrivia();
-        respuesta.setRespuesta(respuestaUsuario);
-        respuestaRepository.save(respuesta);
-
-        return correcta ? "Respuesta correcta" : "Respuesta incorrecta";
+        // guardar respuesta
+        RespuestaTrivia nueva = new RespuestaTrivia(triviaId, usuarioId, respuesta);
+        return respuestaRepo.save(nueva);
     }
 }

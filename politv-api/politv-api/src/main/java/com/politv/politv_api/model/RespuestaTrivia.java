@@ -25,11 +25,57 @@ public class RespuestaTrivia {
     private LocalDateTime fecha = LocalDateTime.now();
 
     // Getters y Setters
-    public Integer getId() { return id; }
-    public Integer getUsuarioId() { return usuarioId; }
-    public Integer getTriviaId() { return triviaId; }
-    public String getRespuesta() { return respuesta; }
-    public void setRespuesta(String respuesta) { this.respuesta = respuesta; }
-    public LocalDateTime getFecha() { return fecha; }
+    public RespuestaTrivia(Integer triviaId, Integer usuarioId, String respuesta) {
+        this.triviaId = triviaId;
+        this.usuarioId = usuarioId;
+        this.respuesta = respuesta;
+    }
+    public RespuestaTrivia(Integer id, Integer usuarioId, Integer triviaId, String respuesta, LocalDateTime fecha) {
+        this.id = id;
+        this.usuarioId = usuarioId;
+        this.triviaId = triviaId;
+        this.respuesta = respuesta;
+        this.fecha = fecha;
+    }
+    public RespuestaTrivia() {}
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public Integer getTriviaId() {
+        return triviaId;
+    }
+
+    public void setTriviaId(Integer triviaId) {
+        this.triviaId = triviaId;
+    }
+
+    public String getRespuesta() {
+        return respuesta;
+    }
+
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
 }
 
