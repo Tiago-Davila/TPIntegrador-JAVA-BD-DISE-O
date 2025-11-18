@@ -9,7 +9,7 @@ begin
 end//
 DELIMITER ;
 drop trigger verificarPalabrasProhibidas;
-insert into publicacion value(77772, 1, 1, "spam", curdate(), "PUBLICADO", NULL, 0);
+
 -- c 
 -- los comentorios y post tienen likes o las publicaciones tienen likes 
 delimiter //
@@ -19,7 +19,7 @@ select sum(likes), count(publicacion.id) from publicacion where idPrograma = pub
 end // 
 delimiter ;
 drop procedure cantidadLikes;
-call cantidadLikes(1);
+
 -- d
 delimiter //
 create function cantidadDePublicacionesUsuario (fechaInicio date, fechaFin date, usuarioID int) returns int deterministic
@@ -32,6 +32,7 @@ begin
 end // 
 delimiter ;
 drop function cantidadDePublicacionesUsuario;
+
 delimiter // 
 create function cantidadDeFavoritosUsuario(fechaInicio date, fechaFin date, usuarioID int) returns int deterministic
 begin 
@@ -42,6 +43,7 @@ begin
 end // 
 delimiter ;
 drop function cantidadDeFavoritosUsuario;
+
 delimiter //
 create procedure usuariosInteractuaronTresVeces(in fechaInicio date, in fechaFin date)
 begin
@@ -51,7 +53,7 @@ begin
 end //
 delimiter ;
 drop procedure usuariosInteractuaronTresVeces;
-call usuariosInteractuaronTresVeces("2024-1-1", current_date());
+
 -- e
 delimiter //
 create Event borrarPublicacionVieja on schedule EVERY 1 month starts now() DO
@@ -66,9 +68,10 @@ create Event enviarNotificacion on schedule every 1 day DO
 begin
 	insert into notificacion(usuarioId, mensaje, fechaEnvio)
 	select usuarioId, concat("Manana se trasmite", programa.nombre, " a las ", programa.horaInicio), programacion.fecha + interval 1 DAY
-	from favorito join programa on programaId = programa.id join programacion on programaId = programa.id where timediff(Day, programacion.fecha, curdate()) = 1;
+	from favorito join programa on programaId = programa.id join programacion on programaId = programa.id where timediff(programacion.fecha, curdate()) = 1;
 end //
 delimiter ;
+
 -- Inserts para tabla usuario
 INSERT INTO usuario (nombreUsuario, mail, telefono, contrasena, fechaRegistro) VALUES
 ('martin_2024', 'martin.gomez@gmail.com', '1145678901', '$2a$10$hashedpassword1', '2024-01-15 10:30:00'),
@@ -126,7 +129,7 @@ INSERT INTO favorito (usuarioId, programaId, fecha) VALUES
 (5, 5, '2024-10-01 11:00:00');
 
 -- Inserts para tabla suscripcionvip
-INSERT INTO suscripcionvip (usuarioId, programaId, fechaInicio, fechaFin, activa) VALUES
+INSERT INTO suscripcionvip (usuario_id, programa_id, fecha_inicio, fecha_fin, activa) VALUES
 (1, 4, '2024-09-01 00:00:00', '2025-09-01 00:00:00', 1),
 (2, 5, '2024-08-15 00:00:00', '2025-08-15 00:00:00', 1),
 (3, 1, '2024-07-01 00:00:00', '2025-07-01 00:00:00', 1),
@@ -178,19 +181,19 @@ INSERT INTO opciones (encuestaId, opcion, trivia_id) VALUES
 
 -- Inserts para tabla votoencuesta
 INSERT INTO votoencuesta (encuestaId, usuarioId, opcionId, fecha) VALUES
-(1, 1, 1, '2024-10-09 14:00:00'),
-(2, 2, 3, '2024-10-09 20:30:00'),
-(3, 3, 5, '2024-10-09 22:30:00'),
-(1, 4, 2, '2024-10-09 14:15:00'),
-(2, 5, 4, '2024-10-09 20:45:00');
+(1, 1, 21, '2024-10-09 14:00:00'),
+(2, 2, 23, '2024-10-09 20:30:00'),
+(3, 3, 25, '2024-10-09 22:30:00'),
+(1, 4, 22, '2024-10-09 14:15:00'),
+(2, 5, 24, '2024-10-09 20:45:00');
 
 -- Inserts para tabla respuestatrivia
 INSERT INTO respuestatrivia (triviaId, usuarioId, respuesta, fecha, opciones_id, opciones_trivia_id) VALUES
-(1, 1, '2020', '2024-10-09 13:45:00', 1, 1),
-(2, 2, 'Rodolfo Barili', '2024-10-09 20:00:00', 3, 2),
-(3, 3, '2005', '2024-10-09 21:30:00', 5, 3),
-(4, 4, 'Luzu TV', '2024-10-09 15:30:00', 1, 1),
-(5, 5, 'Migue Granados', '2024-10-09 17:30:00', 2, 1);
+(1, 1, '2020', '2024-10-09 13:45:00', 21, 1),
+(2, 2, 'Rodolfo Barili', '2024-10-09 20:00:00', 23, 2),
+(3, 3, '2005', '2024-10-09 21:30:00', 25, 3),
+(4, 4, 'Luzu TV', '2024-10-09 15:30:00', 21, 1),
+(5, 5, 'Migue Granados', '2024-10-09 17:30:00', 22, 1);
 
 -- Inserts para tabla notificacion
 INSERT INTO notificacion (usuarioId, mensaje, fechaEnvio) VALUES
@@ -207,3 +210,12 @@ INSERT INTO palabraprohibida (palabra) VALUES
 ('insulto2'),
 ('groseria1'),
 ('ofensa1');
+
+-- insert para probar el trigger del punto b
+insert into publicacion value(77772, 1, 1, "spam", curdate(), "PUBLICADO", NULL, 0);
+
+-- llamado al procedimiento del punto c
+call cantidadLikes(1);
+
+-- llamado al procedimiento que tiene 2 funciones adentro (punto d)
+call usuariosInteractuaronTresVeces("2024-1-1", current_date());
