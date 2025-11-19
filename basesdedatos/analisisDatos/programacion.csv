@@ -1,0 +1,6 @@
+"id","programa_id","fecha","franja","hora_inicio","hora_fin","dia"
+1,1,"2024-10-09","TARDE","13:45:00","15:45:00","MIERCOLES"
+2,2,"2024-10-09","NOCHE","20:00:00","21:00:00","MIERCOLES"
+3,3,"2024-10-09","NOCHE","21:30:00","23:00:00","MIERCOLES"
+4,4,"2024-10-09","TARDE","15:00:00","18:00:00","MIERCOLES"
+5,5,"2024-10-09","TARDE","17:00:00","19:00:00","MIERCOLES"
