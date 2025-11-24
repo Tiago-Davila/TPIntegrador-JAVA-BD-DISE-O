@@ -27,3 +27,22 @@ export interface Post {
 export interface SidebarProps {
     className?: string;
 }
+export interface Subscription {
+    id: number;
+    name: string;
+    handle: string; // Ej: "Tyc_Sports"
+    logoUrl: string;
+}
+
+export interface UserProfileFull {
+    id: number;
+    username: string; // Ej: Splinter
+    handle: string;   // Ej: @maestroSplinter
+    avatarUrl: string;
+    email: string;
+    fullName: string; // El campo "Nombre" del diseño
+    phone: string;
+    subscriptions: Subscription[];
+    // NOTA: La contraseña NO debe venir del backend por seguridad.
+    // En el front solo mostraremos puntitos "......" visualmente.
+}

@@ -183,3 +183,82 @@ export const fetchLiveCommunities = async (): Promise<Community[]> => {
         return MOCK_LIVE_COMMUNITIES;
     }
 };
+
+// src/services/api.ts (Agregar al final)
+import { UserProfileFull } from '../types';
+
+// --- MOCK DATA PARA PERFIL ---
+const MOCK_USER_PROFILE: UserProfileFull = {
+    id: 99,
+    username: "Splinter",
+    handle: "@maestroSplinter",
+    // Usamos una imagen de ejemplo similar a la del diseño
+    avatarUrl: "https://i.pravatar.cc/150?img=68", 
+    email: "example@lpm.edu.ar",
+    fullName: "example",
+    phone: "3123123",
+    subscriptions: [
+        { 
+            id: 1, 
+            name: "Bendita", 
+            handle: "Bendita", 
+            logoUrl: "https://ui-avatars.com/api/?name=Bendita&background=DC2626&color=fff" 
+        },
+        { 
+            id: 2, 
+            name: "TyC Sports", 
+            handle: "Tyc_Sports", 
+            logoUrl: "https://ui-avatars.com/api/?name=TyC&background=0044aa&color=fff"
+        },
+        { 
+            id: 3, 
+            name: "Telefe", 
+            handle: "Telefe", 
+            logoUrl: "https://ui-avatars.com/api/?name=Telefe&background=0055bb&color=fff"
+        }
+    ]
+};
+
+/**
+ * Fetch User Profile (Simulado)
+ */
+export const fetchUserProfile = async (): Promise<UserProfileFull> => {
+    // ID HARCODED PARA PRUEBAS: Usamos el usuario 1 (Martín Pérez según tu SQL)
+    // En el futuro, este ID vendría del login.
+    const userId = 1; 
+
+    try {
+        console.log(`📡 Fetching profile for user ${userId}...`);
+        const response = await fetch(`/api/usuarios/${userId}`);
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("📦 Perfil recibido:", data);
+
+        // Mapeamos los datos de Java (DTO) a la interfaz de React
+        return {
+            id: data.id,
+            username: data.username, // Viene del DTO
+            handle: `@${data.username}`, // Generamos handle visual
+            // Como la DB no tiene avatares, usamos uno generado con la inicial
+            avatarUrl: `https://ui-avatars.com/api/?name=${data.username}&background=random&size=128`, 
+            email: data.email,
+            fullName: data.fullName, // Viene del DTO
+            phone: data.telefono,    // Viene del DTO
+            subscriptions: data.suscripciones.map((sub: any) => ({
+                id: sub.id,
+                name: sub.name,
+                handle: sub.handle || sub.name,
+                logoUrl: `https://ui-avatars.com/api/?name=${sub.name}&background=DC2626&color=fff`
+            }))
+        };
+
+    } catch (error) {
+        console.error("❌ Error conectando con API Usuarios:", error);
+        // Si falla, podrías devolver null o lanzar error para que la UI lo maneje
+        throw error;
+    }
+};
