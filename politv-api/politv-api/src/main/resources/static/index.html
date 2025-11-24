@@ -1,56 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Chat PoliTV</title>
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SocialRed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: '#1a1d21', // Deep dark grey/blue from image
+              card: '#222529', // Slightly lighter for content
+              primary: '#DC2626', // The specific red from the image
+              textMain: '#ffffff',
+              textMuted: '#9ca3af',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #1a1d21;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      /* Custom Scrollbar for aesthetics */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1d21; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #444; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #DC2626; 
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
+  }
+}
+</script>
 </head>
-<body>
-  <h2>Chat en vivo - Programa 1</h2>
-
-  <div id="chat-box" style="border:1px solid #ccc; width:400px; height:250px; overflow-y:scroll; padding:10px;"></div>
-
-  <input id="usuarioId" type="number" placeholder="ID Usuario">
-  <input id="mensaje" type="text" placeholder="Escribí tu mensaje...">
-  <button onclick="sendMessage()">Enviar</button>
-
-  <script>
-    let stompClient = null;
-    const programaId = 1;
-
-    function connect() {
-      const socket = new SockJS("/chat-websocket");
-      stompClient = Stomp.over(socket);
-      stompClient.connect({}, () => {
-        stompClient.subscribe(`/topic/chat/${programaId}`, (msg) => {
-          const data = JSON.parse(msg.body);
-          showMessage(`${data.nombreUsuario}: ${data.mensaje}`);
-        });
-      });
-    }
-
-    function showMessage(message) {
-      const chatBox = document.getElementById("chat-box");
-      const p = document.createElement("p");
-      p.textContent = message;
-      chatBox.appendChild(p);
-    }
-
-    function sendMessage() {
-      const usuarioId = document.getElementById("usuarioId").value;
-      const mensaje = document.getElementById("mensaje").value;
-
-      stompClient.send(`/app/chat/${programaId}`, {}, JSON.stringify({
-        usuarioId: parseInt(usuarioId),
-        programaId: programaId,
-        mensaje: mensaje
-      }));
-
-      document.getElementById("mensaje").value = "";
-    }
-
-    connect();
-  </script>
-</body>
+  <body>
+    <div id="root"></div>
+    <!-- Entry point para Vite -->
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>

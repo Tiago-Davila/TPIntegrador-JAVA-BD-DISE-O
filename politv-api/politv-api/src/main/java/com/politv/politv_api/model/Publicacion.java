@@ -1,5 +1,6 @@
 package com.politv.politv_api.model;
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.IntegerList;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
@@ -16,8 +17,9 @@ public class Publicacion {
     private Programa programa;
     @Column(name = "contenido")
     private String texto;
-    @Column(name = "usuario_id")
-    private int usuarioId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_publicacion")
@@ -29,12 +31,16 @@ public class Publicacion {
     @Column (name = "url_imagen")
     private Blob imagen;
 
-    public Publicacion(Programa programa, String texto, int usuarioId, EstadoPublicacion estadoPublicacion) {
+    @Column (name = "likes")
+    private int likes;
+
+    public Publicacion(Programa programa, String texto, Usuario usuario, EstadoPublicacion estadoPublicacion) {
         this.programa = programa;
         this.texto = texto;
-        this.usuarioId = usuarioId;
+        this.usuario = usuario;
         this.estadoPublicacion = estadoPublicacion;
         this.fechaCreacion = LocalDateTime.now();
+        this.likes = 0;
     }// para crear publicaciones mas facil
 
     public Publicacion(){}
@@ -63,12 +69,12 @@ public class Publicacion {
         this.texto = texto;
     }
 
-    public int getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarioId(int usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public EstadoPublicacion getEstadoPublicacion() {
@@ -93,5 +99,10 @@ public class Publicacion {
 
     public void setImagen(Blob imagen) {
         this.imagen = imagen;
+    }
+
+    public int getLikes() {return likes;}
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

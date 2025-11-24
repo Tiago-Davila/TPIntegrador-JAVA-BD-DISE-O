@@ -21,15 +21,15 @@ public class ProgramacionController {
     private final ProgramacionRepository programacionRepository;
     private final ProgramaRepository programaRepository;
     private final ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository;
-    private final PublicacionService service;
+    private final PublicacionRepository publicacionRepository;
     private final ProgramaService programaService;
 
 
-    public ProgramacionController(ProgramacionRepository programacionRepository, ProgramaRepository programaRepository, ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository, PublicacionService service, ProgramaService programaService) {
+    public ProgramacionController(ProgramacionRepository programacionRepository, ProgramaRepository programaRepository, ProgramaPorFranjaHorariaRepository programaPorFranjaHorariaRepository, PublicacionRepository publicacionRepository, ProgramaService programaService) {
         this.programacionRepository = programacionRepository;
         this.programaRepository = programaRepository;
         this.programaPorFranjaHorariaRepository = programaPorFranjaHorariaRepository;
-        this.service = service;
+        this.publicacionRepository = publicacionRepository;
         this.programaService = programaService;
     }
 
@@ -62,6 +62,10 @@ public class ProgramacionController {
         }
     }//http://localhost:8080/api/programa/1/suscripcionVip?usuarioId=1
 
+    @GetMapping("/publicaciones")
+    public List<Publicacion> listarTodas() {
+        return publicacionRepository.findAll();
+    }
 
 
 

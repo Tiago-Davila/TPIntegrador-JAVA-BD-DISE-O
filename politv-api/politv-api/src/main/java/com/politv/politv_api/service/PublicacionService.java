@@ -1,12 +1,10 @@
 package com.politv.politv_api.service;
 
-import com.politv.politv_api.model.PalabraProhibida;
-import com.politv.politv_api.model.Programa;
-import com.politv.politv_api.model.Publicacion;
-import com.politv.politv_api.model.EstadoPublicacion;
+import com.politv.politv_api.model.*;
 import com.politv.politv_api.repository.PalabraProhibidaRepository;
 import com.politv.politv_api.repository.ProgramaRepository;
 import com.politv.politv_api.repository.PublicacionRepository;
+import com.politv.politv_api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,11 +14,13 @@ public class PublicacionService {
     private final PublicacionRepository publicacionRepository;
     private final PalabraProhibidaRepository palabraProhibidaRepository;
     private final ProgramaRepository programaRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public PublicacionService(PublicacionRepository publicacionRepository, PalabraProhibidaRepository palabraProhibidaRepository, ProgramaRepository programaRepository) {
+    public PublicacionService(PublicacionRepository publicacionRepository, PalabraProhibidaRepository palabraProhibidaRepository, ProgramaRepository programaRepository, UsuarioRepository usuarioRepository) {
         this.publicacionRepository = publicacionRepository;
         this.palabraProhibidaRepository = palabraProhibidaRepository;
         this.programaRepository = programaRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public PublicacionRepository getPublicacionRepository() {
@@ -35,6 +35,10 @@ public class PublicacionService {
         return programaRepository;
     }
 
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
+
     public List<Publicacion> listarPublicacionesPublicas(Integer programaId) {
         return publicacionRepository.findByPrograma_IdAndEstadoPublicacion (programaId, EstadoPublicacion.PUBLICADO);
     }
@@ -47,9 +51,9 @@ public class PublicacionService {
         if (contienePalabraProhibida) estado = EstadoPublicacion.PENDIENTE_REVISION;
             else estado = EstadoPublicacion.PUBLICADO;
         Programa programa = programaRepository.findById(programaId).orElseThrow(() -> new RuntimeException("Programa no encontrado"));
+        Usuario usuario =  usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-
-        Publicacion nueva = new Publicacion(programa, contenido, usuarioId, estado);
+        Publicacion nueva = new Publicacion(programa, contenido, usuario, estado);
         publicacionRepository.save(nueva);
         return publicacionRepository.save(nueva);
     }

@@ -2,6 +2,7 @@ package com.politv.politv_api.model;
 import jakarta.persistence.*;
 
 import javax.annotation.processing.Generated;
+import java.sql.Blob;
 import java.time.LocalDate;
 @Entity
 @Table(name = "programa", schema = "basededatostv")
@@ -24,7 +25,10 @@ public class Programa {
     @Column(name = "fechaFin")
     private LocalDate fechaFin;
 
-    public Programa(int id, String nombre, String descripcion, boolean especial, int duracionMinutos, LocalDate fechaInicio, LocalDate fechaFin) {
+    @Column(name = "imagen")
+    private Blob imagen;
+
+    public Programa(int id, String nombre, String descripcion, boolean especial, int duracionMinutos, LocalDate fechaInicio, LocalDate fechaFin, Blob imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -32,7 +36,9 @@ public class Programa {
         this.duracionMinutos = duracionMinutos;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.imagen = imagen;
     }
+
     public Programa(){}
 
     public int getId() {
@@ -89,5 +95,13 @@ public class Programa {
 
     public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    public Blob getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Blob imagen) {
+        this.imagen = imagen;
     }
 }
