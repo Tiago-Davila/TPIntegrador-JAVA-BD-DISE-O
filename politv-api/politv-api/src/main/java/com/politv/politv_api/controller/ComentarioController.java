@@ -24,9 +24,9 @@ public class ComentarioController {
     @GetMapping("/{programaId}/blog/comentarios")
     public List<Publicacion> listarPublicacionesPublicas(@PathVariable Integer programaId) {
         return service.listarPublicacionesPublicas(programaId);
-    }
+    }//http://localhost:8080/api/programas/1/blog/comentarios
     @PostMapping("/{programaId}/blog/comentar")
     public Publicacion comentar(@PathVariable Integer programaId, @RequestParam Integer usuarioId   , @RequestParam String contenido) {
         return service.crearComentario(programaId, usuarioId, contenido);
-    }
+    }//http://localhost:8080/api/programas/1/blog/comentar?usuarioId=1&contenido=me da asco este programa
 }

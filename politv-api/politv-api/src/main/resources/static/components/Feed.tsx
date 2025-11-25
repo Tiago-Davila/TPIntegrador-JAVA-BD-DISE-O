@@ -25,7 +25,7 @@ export const Feed: React.FC = () => {
             {/* Feed Header */}
             <div className="mb-8 border-b-2 border-primary/50 pb-4">
                 <h1 className="text-3xl font-light text-gray-200">
-                    Hola, <span className="text-white font-bold">Splinter</span>
+                    Hola, <span className="text-white font-bold">Bienvenido</span>
                 </h1>
                 <p className="text-gray-500 text-sm mt-1">Estas son las novedades de hoy</p>
             </div>

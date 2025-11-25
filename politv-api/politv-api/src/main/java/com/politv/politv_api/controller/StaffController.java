@@ -29,13 +29,14 @@ public class StaffController {
     public StaffProframaService getStaffProframaService() {
         return staffProframaService;
     }
-
+    //http://localhost:8080/api/staff/3
     @GetMapping("/staff/{staffId}")
     public Optional<Staff> listarStaff(@PathVariable Integer staffId) {
         return staffRepository.findById(staffId);
     }
+
     @GetMapping("/programas/{programaId}/staff")
     public List<Staff> listarStaffPorPrograma(@PathVariable Integer programaId) {
         return staffProframaService.listarStaffPorPrograma(programaId);
-    }
+    }//http://localhost:8080/api/programas/3/staff
 }

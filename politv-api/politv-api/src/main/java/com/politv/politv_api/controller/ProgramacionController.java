@@ -64,7 +64,7 @@ public class ProgramacionController {
 
     @GetMapping("/publicaciones")
     public List<Publicacion> listarTodas() {
-        return publicacionRepository.findAll();
+        return publicacionRepository.findByEstadoPublicacion(EstadoPublicacion.PUBLICADO);
     }
 
 

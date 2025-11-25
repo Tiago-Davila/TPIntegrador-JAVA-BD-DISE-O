@@ -24,11 +24,11 @@ public class NotificacionController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }// http://localhost:8080/api/notificaciones/recordatorios
 
     @GetMapping("/usuarios/{usuarioId}/notificaciones/proximas")
     public ResponseEntity<List<Notificacion>> listar(@PathVariable int usuarioId) {
         List<Notificacion> proximas = notificacionService.listarProximas(usuarioId);
         return ResponseEntity.ok(proximas);
-    }
+    }// http://localhost:8080/api/usuarios/1/notificaciones/proximas
 }

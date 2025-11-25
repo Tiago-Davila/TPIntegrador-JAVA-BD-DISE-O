@@ -26,12 +26,13 @@ public class FavoritoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    //http://localhost:8080/api/usuarios/1/favoritos/5
 
     @GetMapping("/{usuarioId}/favoritos")
     public ResponseEntity<List<Favorito>> listar(@PathVariable Integer usuarioId) {
         return ResponseEntity.ok(favoritoService.listarFavoritos(usuarioId));
     }
-
+    // http://localhost:8080/api/usuarios/1/favoritos
     @DeleteMapping("/{usuarioId}/favoritos/{programaId}")
     public ResponseEntity<?> eliminar(@PathVariable Integer usuarioId, @PathVariable Integer programaId) {
         try {
@@ -40,6 +41,6 @@ public class FavoritoController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }// http://localhost:8080/api/usuarios/1/favoritos/5
 }
 

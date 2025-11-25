@@ -28,6 +28,9 @@ public class Programa {
     @Column(name = "imagen")
     private Blob imagen;
 
+    @Column(name = "en_vivo")
+    private boolean enVivo;
+
     public Programa(int id, String nombre, String descripcion, boolean especial, int duracionMinutos, LocalDate fechaInicio, LocalDate fechaFin, Blob imagen) {
         this.id = id;
         this.nombre = nombre;
@@ -37,12 +40,21 @@ public class Programa {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.imagen = imagen;
+        this.enVivo = false;
     }
 
     public Programa(){}
 
     public int getId() {
         return id;
+    }
+
+    public boolean isEnVivo() {
+        return enVivo;
+    }
+
+    public void setEnVivo(boolean enVivo) {
+        this.enVivo = enVivo;
     }
 
     public void setId(int id) {

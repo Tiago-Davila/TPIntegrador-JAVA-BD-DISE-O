@@ -24,20 +24,54 @@ public class Trivia {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    private Boolean activa = true;
+    public Trivia() {}
+    public Trivia(Integer id, Integer programaId, String pregunta, String respuestaCorrecta, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.programaId = programaId;
+        this.pregunta = pregunta;
+        this.respuestaCorrecta = respuestaCorrecta;
+        this.fechaCreacion = fechaCreacion;
+    }
 
-    // Getters y Setters
-    public Integer getId() { return id; }
-    public Integer getProgramaId() { return programaId; }
-    public void setProgramaId(Integer programaId) { this.programaId = programaId; }
-    public String getPregunta() { return pregunta; }
-    public void setPregunta(String pregunta) { this.pregunta = pregunta; }
-    public String getRespuestaCorrecta() { return respuestaCorrecta; }
-    public void setRespuestaCorrecta(String respuestaCorrecta) { this.respuestaCorrecta = respuestaCorrecta; }
-    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
-    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
-    public Boolean getActiva() { return activa; }
-    public void setActiva(Boolean activa) { this.activa = activa; }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getProgramaId() {
+        return programaId;
+    }
+
+    public void setProgramaId(Integer programaId) {
+        this.programaId = programaId;
+    }
+
+    public String getPregunta() {
+        return pregunta;
+    }
+
+    public void setPregunta(String pregunta) {
+        this.pregunta = pregunta;
+    }
+
+    public String getRespuestaCorrecta() {
+        return respuestaCorrecta;
+    }
+
+    public void setRespuestaCorrecta(String respuestaCorrecta) {
+        this.respuestaCorrecta = respuestaCorrecta;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
 }
 
 

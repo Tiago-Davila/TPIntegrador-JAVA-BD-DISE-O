@@ -12,8 +12,9 @@ public class Programacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "programa_id")
-    private int programaId;
+    @ManyToOne
+    @JoinColumn(name = "programa_id")
+    private Programa programa;
 
     @Column(name = "fecha")
     private LocalDate fecha;
@@ -35,9 +36,9 @@ public class Programacion {
     public Programacion() {
     }
 
-    public Programacion(int id, int programaId, LocalDate fecha, Franja franja, LocalTime horaInicio, LocalTime horaFin, Dia dia) {
+    public Programacion(int id, Programa programa, LocalDate fecha, Franja franja, LocalTime horaInicio, LocalTime horaFin, Dia dia) {
         this.id = id;
-        this.programaId = programaId;
+        this.programa = programa;
         this.fecha = fecha;
         this.franja = franja;
         this.horaInicio = horaInicio;
@@ -53,12 +54,12 @@ public class Programacion {
         this.id = id;
     }
 
-    public int getProgramaId() {
-        return programaId;
+    public Programa getPrograma() {
+        return programa;
     }
 
-    public void setProgramaId(int programaId) {
-        this.programaId = programaId;
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
     }
 
     public LocalDate getFecha() {

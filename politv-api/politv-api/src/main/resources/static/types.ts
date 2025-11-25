@@ -46,3 +46,30 @@ export interface UserProfileFull {
     // NOTA: La contraseña NO debe venir del backend por seguridad.
     // En el front solo mostraremos puntitos "......" visualmente.
 }
+// src/types.ts
+
+// Mantenemos los existentes y agregamos/extendemos:
+
+export interface StaffMember {
+    id: number;
+    nombre: string;
+    apellido: string;
+    rol: string; // 'Conductor', 'Productor', etc.
+}
+
+export interface ChatMessageData {
+    id?: number; // Opcional porque al enviar no tiene ID aún
+    usuarioId: number;
+    programaId: number;
+    mensaje: string;
+    nombreUsuario: string; // El backend lo devuelve
+    fecha?: string; // Para el historial
+}
+
+// Extendemos Community para incluir detalles completos
+export interface ProgramFullDetails extends Community {
+    description: string;
+    schedule: string; // "Lunes a Viernes..."
+    bannerUrl: string; // Nueva imagen grande
+    staff: StaffMember[];
+}
