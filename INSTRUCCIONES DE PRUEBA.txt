@@ -1,0 +1,98 @@
+INSTRUCCIONES DE PRUEBA
+
+Punto n3 del enunciado Poli Tv:
+a) Programación por Franja Horaria
+Método: GET 
+URL: 
+http://localhost:8080/api/programacion/listarPrograma?fecha=2024-10-09&franja=NOCHE
+
+b) Suscripción VIP a un programa
+Metodo : POST
+URL: 
+http://localhost:8080/api/programa/1/suscripcionVip?usuarioId=1
+
+No hace falta body ya que se lo pasa por la ruta.
+C) Publicaciones de un programa
+Metodo: GET
+URL: 
+//http://localhost:8080/api/programas/1/blog/comentarios
+
+d) Comentario en blog del programa (con moderación)
+Metodo: POST
+URL:
+http://localhost:8080/api/programas/1/blog/comentar?usuarioId=1&contenido=me da asco este programa
+
+e) Encuestas y trivias
+1) /api/programas/{programaId}/encuestas/activas
+Metodo: GET
+//http://localhost:8080/api/programas/1/encuestas/activas
+
+2) /api/encuestas/{encuestaId}/votar 
+Metodo: Post
+URL:
+//http://localhost:8080/api/encuestas/1/votar?usuarioId=2&opcionId=6
+
+3) /api/trivias/{triviaId}/responder
+Metodo: Post
+URL: 
+http://localhost:8080/api/trivias/3/responder
+
+BODY: 
+{
+    "usuarioId": 2,
+    "respuesta": "Messi gano 2 balones de oro" 
+}
+
+f) Listar Staff
+1) /staff/{staffId}
+Metodo: GET
+URL: 
+http://localhost:8080/api/staff/3
+
+2) /api/programas/{programaId}/staff
+Metodo: GET
+URL: 
+http://localhost:8080/api/programas/3/staff
+
+g) Favoritos del usuario
+1) POST /api/usuarios/{usuarioId}/favoritos/{programaId} 
+Metodo: POST
+URL: 
+http://localhost:8080/api/usuarios/1/favoritos/5
+
+2) /api/usuarios/{usuarioId}/favoritos
+Metodo: GET
+URL:
+http://localhost:8080/api/usuarios/1/favoritos
+
+3) /api/usuarios/{usuarioId}/favoritos/{programaId}
+Metodo: DELETE
+URL:
+http://localhost:8080/api/usuarios/1/favoritos/5
+
+h) Recordatorios y notificaciones de programación
+1) /api/notificaciones/recordatorios
+Metodo: POST
+URL:
+http://localhost:8080/api/notificaciones/recordatorios
+
+BODY: {
+  "usuarioId": 1,
+  "programaId": 2,
+  "mensaje": "Hola, este es un mensaje de prueba",
+  "enviada": false,
+  "fechaEnvio": "2025-11-24T22:30:00"
+}
+2) /api/usuarios/{usuarioId}/notificaciones/próximas
+Metodo: GET
+URL:
+http://localhost:8080/api/usuarios/1/notificaciones/proximas
+
+DISENIO HTML CON REACT Y TYPESCRIPT
+EL disenio del html se realizo con react y typescript con un solo archivo html, y los componentes en react, typescript para entender los modelos de JAVA y realizar las request. Para probarlo se tiene que inicializar el proyecto se tiene que instalar las dependencias del archivo package.json con npm install en la carpeta “static”, el proyecto se ejecuta en la ruta localhost:5173 en donde se vera la pagina principal o home, clickeando en la barra de la izquierda donde se encuentran los favoritos se encontraran las comunidades y sus post de cada uno, por ultimo si se clickea en el perfil se podrá ver cada uno de ellos, con su respectiva url.
+
+
+
+
+
+
