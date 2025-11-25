@@ -92,6 +92,7 @@ DISENIO HTML CON REACT Y TYPESCRIPT
 EL disenio del html se realizo con react y typescript con un solo archivo html, y los componentes en react, typescript para entender los modelos de JAVA y realizar las request. Para probarlo se tiene que inicializar el proyecto se tiene que instalar las dependencias del archivo package.json con npm install en la carpeta “static”, el proyecto se ejecuta en la ruta localhost:5173 en donde se vera la pagina principal o home, clickeando en la barra de la izquierda donde se encuentran los favoritos se encontraran las comunidades y sus post de cada uno, por ultimo si se clickea en el perfil se podrá ver cada uno de ellos, con su respectiva url.
 
 
+https://github.com/Tiago-Davila/TPIntegrador-JAVA-BD-DISE-O/commit/1a48db77d44b8be2656632b95bf6aa71b464002d
 
 
 
